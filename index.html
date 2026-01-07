@@ -1,0 +1,826 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Bookworm’s Corner</title>
+<style>
+:root{
+  --bg:#f5f6fb;
+  --card:#ffffff;
+  --text:#111827;
+  --muted:#6b7280;
+  --brand:#111827;
+  --accent:#4f46e5;
+  --accent2:#f59e0b;
+  --border:#e5e7eb;
+  --shadow:0 10px 24px rgba(0,0,0,.08);
+  --radius:14px;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family: Arial, sans-serif;
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+}
+
+/* Top Nav */
+.topbar{
+  position:sticky; top:0; z-index:50;
+  background:var(--brand);
+  color:#fff;
+  padding:14px 18px;
+  box-shadow:0 6px 18px rgba(0,0,0,.2);
+}
+.navwrap{
+  max-width:1150px;
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  flex-wrap:wrap;
+}
+.brand{
+  font-weight:800;
+  letter-spacing:.2px;
+  font-size:18px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  white-space:nowrap;
+}
+.brand .dot{
+  width:10px;height:10px;border-radius:999px;background:var(--accent2);
+  display:inline-block;
+}
+.navlinks{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.navlinks a{
+  color:#fff;
+  text-decoration:none;
+  font-weight:700;
+  font-size:14px;
+  padding:8px 10px;
+  border-radius:10px;
+  opacity:.92;
+}
+.navlinks a:hover{background:rgba(255,255,255,.08); opacity:1;}
+.badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:22px;
+  height:22px;
+  padding:0 7px;
+  border-radius:999px;
+  background:var(--accent2);
+  color:#111;
+  font-weight:900;
+  font-size:12px;
+  margin-left:6px;
+}
+
+/* Layout */
+.container{
+  max-width:1150px;
+  margin:18px auto 60px;
+  padding:0 16px;
+}
+section{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:22px;
+  margin:16px 0;
+}
+h2{margin:0 0 10px;}
+p{line-height:1.55; color:var(--muted);}
+
+.split{
+  display:grid;
+  grid-template-columns: 1.15fr .85fr;
+  gap:16px;
+  align-items:stretch;
+}
+@media (max-width: 900px){
+  .split{grid-template-columns:1fr;}
+}
+
+/* Hero card */
+.hero{
+  padding:26px;
+  background:linear-gradient(135deg,#ffffff,#eef2ff);
+  border-radius:var(--radius);
+  border:1px solid var(--border);
+}
+.hero h1{
+  margin:0 0 8px;
+  font-size:34px;
+  color:#0f172a;
+  letter-spacing:-.3px;
+}
+.hero p{margin:0 0 14px; max-width:720px;}
+.pillrow{display:flex; flex-wrap:wrap; gap:8px; margin-top:12px;}
+.pill{
+  font-size:12px;
+  padding:6px 10px;
+  border-radius:999px;
+  background:#fff;
+  border:1px solid var(--border);
+  color:#334155;
+  font-weight:700;
+}
+.btn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  border:0;
+  background:var(--accent);
+  color:#fff;
+  font-weight:800;
+  padding:10px 14px;
+  border-radius:12px;
+  cursor:pointer;
+  text-decoration:none;
+}
+.btn:hover{filter:brightness(.96);}
+.btn.secondary{background:#111827;}
+.btn.ghost{
+  background:#fff;
+  color:#111827;
+  border:1px solid var(--border);
+}
+
+/* Store header + search */
+.storeTop{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:10px;
+}
+.searchWrap{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.searchWrap input, .searchWrap select{
+  padding:10px 12px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:#fff;
+  min-width:240px;
+  outline:none;
+}
+.searchWrap select{min-width:180px;}
+.mutedSmall{font-size:13px; color:var(--muted); margin:6px 0 0;}
+
+/* Book grid */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+  gap:14px;
+  margin-top:14px;
+}
+.book{
+  border:1px solid var(--border);
+  background:#fff;
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 10px 20px rgba(0,0,0,.06);
+  display:flex;
+  flex-direction:column;
+}
+.book img{
+  width:100%;
+  height:280px;
+  object-fit:cover;
+  background:#f3f4f6;
+  display:block;
+}
+.bookBody{
+  padding:12px 12px 14px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  flex:1;
+}
+.bTitle{font-weight:900; margin:0; color:#0f172a;}
+.bMeta{font-size:13px; color:var(--muted); margin:0;}
+.bTag{
+  display:inline-block;
+  width:max-content;
+  font-size:12px;
+  font-weight:800;
+  padding:4px 9px;
+  border-radius:999px;
+  background:#eef2ff;
+  color:#3730a3;
+  border:1px solid #e0e7ff;
+  margin-top:4px;
+}
+.priceRow{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-top:6px;
+}
+.price{font-weight:900; color:#111827;}
+.addBtn{
+  width:100%;
+  padding:10px 12px;
+  border-radius:12px;
+  border:0;
+  background:#111827;
+  color:#fff;
+  font-weight:900;
+  cursor:pointer;
+  margin-top:8px;
+}
+.addBtn:hover{background:#0b1220;}
+
+/* Cart */
+.cartWrap{
+  display:grid;
+  grid-template-columns: 1.2fr .8fr;
+  gap:16px;
+  align-items:start;
+}
+@media (max-width: 900px){
+  .cartWrap{grid-template-columns:1fr;}
+}
+.table{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+  overflow:hidden;
+  border:1px solid var(--border);
+  border-radius:16px;
+  background:#fff;
+}
+.table th, .table td{
+  padding:12px 12px;
+  border-bottom:1px solid var(--border);
+  text-align:left;
+  font-size:14px;
+  vertical-align:middle;
+}
+.table th{
+  background:#f8fafc;
+  font-weight:900;
+  color:#0f172a;
+}
+.table tr:last-child td{border-bottom:none;}
+.qtyCtrl{display:flex;align-items:center;gap:8px;}
+.qtyBtn{
+  width:30px;height:30px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:#fff;
+  cursor:pointer;
+  font-weight:900;
+}
+.qtyBtn:hover{background:#f3f4f6;}
+.removeBtn{
+  border:1px solid var(--border);
+  background:#fff;
+  padding:8px 10px;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:800;
+  color:#111827;
+}
+.removeBtn:hover{background:#fef2f2; border-color:#fecaca; color:#991b1b;}
+.summary{
+  border:1px solid var(--border);
+  border-radius:16px;
+  background:#fff;
+  padding:14px;
+  box-shadow:0 10px 20px rgba(0,0,0,.05);
+}
+.sumRow{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  padding:8px 0;
+  border-bottom:1px dashed #e5e7eb;
+  color:#111827;
+  font-size:14px;
+}
+.sumRow:last-child{border-bottom:none;}
+.sumTotal{font-weight:950;font-size:16px;}
+.empty{
+  padding:14px;
+  border:1px dashed #cbd5e1;
+  border-radius:16px;
+  background:#f8fafc;
+  color:#334155;
+  font-weight:700;
+}
+
+/* Footer */
+footer{
+  max-width:1150px;
+  margin:0 auto;
+  padding:18px 16px 30px;
+  color:#6b7280;
+  font-size:13px;
+  text-align:center;
+}
+.tiny{font-size:12px; color:#94a3b8; margin-top:8px;}
+
+/* ===== Checkout Modal ===== */
+.modal{
+  position:fixed;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  background:rgba(15,23,42,.55);
+  z-index:9999;
+}
+.modal.show{display:flex;}
+.modalCard{
+  width:min(900px,96vw);
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:16px;
+  box-shadow:0 20px 60px rgba(2,6,23,.25);
+  overflow:hidden;
+}
+.modalHeader{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:16px 18px;
+  border-bottom:1px solid var(--border);
+}
+.closeBtn{
+  width:42px;height:42px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:#fff;
+  cursor:pointer;
+  font-size:26px;
+  line-height:1;
+}
+.closeBtn:hover{background:#f3f4f6;}
+.modalBody{
+  padding:18px;
+  display:grid;
+  gap:10px;
+}
+.fLabel{font-weight:800;color:#0f172a;margin-top:6px;}
+.fInput,.fTextarea{
+  width:100%;
+  padding:12px 12px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  outline:none;
+  background:#fff;
+}
+.fTextarea{resize:vertical;}
+.checkoutSummaryBox{
+  margin-top:10px;
+  border:1px dashed #cbd5e1;
+  border-radius:14px;
+  padding:12px;
+  background:#f8fafc;
+  color:#0f172a;
+  font-size:14px;
+}
+.modalActions{
+  display:flex;
+  gap:10px;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+  margin-top:6px;
+}
+</style>
+</head>
+
+<body>
+<header class="topbar">
+  <div class="navwrap">
+    <div class="brand"><span class="dot"></span> The Bookworm’s Corner</div>
+    <nav class="navlinks" aria-label="Primary Navigation">
+      <a href="#home">Home</a>
+      <a href="#store">Store</a>
+      <a href="#cart">Cart <span class="badge" id="cartCount">0</span></a>
+      <a href="#about">About Us</a>
+    </nav>
+  </div>
+</header>
+
+<div class="container">
+
+<section id="home">
+  <div class="split">
+    <div class="hero">
+      <h1>Discover your next great read.</h1>
+      <p><b>The Bookworm’s Corner</b> is a modern, student-friendly bookstore designed like a mini library:
+        curated shelves, clear categories, and quick checkout. Browse the Store, search books by title or author,
+        add items to your cart, and complete the order in a simple demo checkout.</p>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
+        <a class="btn" href="#store">Explore Store</a>
+        <a class="btn ghost" href="#about">Learn More</a>
+      </div>
+      <div class="pillrow" aria-label="Key features">
+        <span class="pill">Search & Filter</span>
+        <span class="pill">Add to Cart</span>
+        <span class="pill">Update Quantity</span>
+        <span class="pill">Demo Checkout</span>
+      </div>
+    </div>
+
+    <div>
+      <h2 style="margin-top:4px;">Library-style Services</h2>
+      <p>To make it feel like a library-inspired bookstore, we include:</p>
+      <ul style="margin:0; padding-left:18px; color:var(--muted); line-height:1.7;">
+        <li><b>Curated Categories</b> (Fiction, Thriller, Self-Development, Education)</li>
+        <li><b>Book Details</b> (author, short summary, price, cover)</li>
+        <li><b>Cart Management</b> (add, remove, quantity control)</li>
+        <li><b>Simple Checkout</b> (confirmation message for assignment demo)</li>
+      </ul>
+      <p class="mutedSmall">Tip: Take screenshots of Home, Store (with search), Cart (table + totals), and About Us for your LR evidence.</p>
+    </div>
+  </div>
+</section>
+
+<section id="store">
+  <div class="storeTop">
+    <div>
+      <h2>Store</h2>
+      <p class="mutedSmall">Search by title/author, or filter by category. Click “Add to Cart” to purchase.</p>
+    </div>
+    <div class="searchWrap">
+      <input id="searchInput" type="search" placeholder="Search books (e.g., Paradox, Tom Ryan)..." />
+      <select id="categoryFilter" aria-label="Filter by category">
+        <option value="all">All Categories</option>
+        <option value="Fiction">Fiction</option>
+        <option value="Thriller">Thriller</option>
+        <option value="Self-Development">Self-Development</option>
+        <option value="Education">Education</option>
+      </select>
+      <button class="btn secondary" type="button" id="clearBtn">Clear</button>
+    </div>
+  </div>
+  <div id="storeGrid" class="grid" aria-live="polite"></div>
+</section>
+
+<section id="cart">
+  <h2>Cart</h2>
+  <p class="mutedSmall">Review your items, update quantities, then proceed to checkout.</p>
+  <div class="cartWrap">
+    <div id="cartLeft"></div>
+
+    <div class="summary" aria-label="Order summary">
+      <h3 style="margin:0 0 6px;">Order Summary</h3>
+      <div class="sumRow"><span>Subtotal</span><b id="subTotal">$0.00</b></div>
+      <div class="sumRow"><span>Delivery</span><b>$0.00</b></div>
+      <div class="sumRow"><span>Discount</span><b>$0.00</b></div>
+      <div class="sumRow sumTotal"><span>Total</span><span class="sumTotal" id="grandTotal">$0.00</span></div>
+
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;">
+        <button class="btn" type="button" onclick="checkout()">Proceed to Checkout</button>
+        <button class="btn ghost" type="button" onclick="clearCart()">Clear Cart</button>
+      </div>
+
+      <div class="tiny">Demo checkout for assignment: displays confirmation message (no real payment).</div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <h2>About Us</h2>
+  <p><b>The Bookworm’s Corner</b> was created as a Web & Mobile Applications project to demonstrate core web features:
+    structured navigation, clean UI layout, dynamic searching, and shopping-cart interactions using HTML, CSS, and JavaScript.</p>
+  <p>Our goal is to make browsing simple and library-like: users can quickly find books through a search bar and category filters,
+    view book information, and simulate purchasing by adding books to a cart and completing checkout.</p>
+  <p class="mutedSmall">Created for academic demonstration purposes (no payment gateway, no real transactions).</p>
+</section>
+
+</div>
+
+<footer>© 2026 The Bookworm’s Corner — Assignment Demo Website</footer>
+
+<!-- Checkout Modal -->
+<div id="checkoutModal" class="modal" aria-hidden="true">
+  <div class="modalCard" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
+    <div class="modalHeader">
+      <h2 id="checkoutTitle" style="margin:0;">Checkout</h2>
+      <button class="closeBtn" type="button" onclick="closeCheckout()" aria-label="Close">×</button>
+    </div>
+
+    <form id="checkoutForm" class="modalBody">
+      <label class="fLabel" for="fullName">Full Name</label>
+      <input id="fullName" class="fInput" type="text" required />
+
+      <label class="fLabel" for="checkoutEmail">Email</label>
+      <input id="checkoutEmail" class="fInput" type="email" required />
+
+      <label class="fLabel" for="checkoutAddress">Address</label>
+      <textarea id="checkoutAddress" class="fTextarea" rows="3" required></textarea>
+
+      <label class="fLabel" for="payment">Payment Method</label>
+      <select id="payment" class="fInput" required>
+        <option value="">Choose...</option>
+        <option value="Mobile Wallet">Mobile Wallet (placeholder)</option>
+        <option value="Cash on Delivery">Cash on Delivery (demo)</option>
+        <option value="Card">Card (demo)</option>
+      </select>
+
+      <div class="tiny">Demo only — no real payment is processed.</div>
+
+      <div id="checkoutSummaryBox" class="checkoutSummaryBox" aria-live="polite"></div>
+
+      <div class="modalActions">
+        <button type="button" class="btn ghost" onclick="closeCheckout()">Cancel</button>
+        <button type="submit" class="btn">Place Order</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+/* =========================
+   BOOK DATA
+   ========================= */
+const books = [
+  { id:1, title:"Paradox", author:"Margarita Perez", category:"Fiction", price:12.00, img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGp7K1nXKz5bc3ZmR3UiijMM6wf7w-AQ3-DA&s", desc:"Time-travel fiction where every decision reshapes reality." },
+  { id:2, title:"Keep This to Yourself", author:"Tom Ryan", category:"Thriller", price:10.00, img:"https://images-platform.99static.com//e6_0y2vIpTnTFChj_Mqd-UYLy2U=/251x112:1136x998/fit-in/500x500/projects-files/67/6775/677558/2960c98f-1049-40d8-a00d-74d81dc03909.jpg", desc:"A suspenseful mystery filled with secrets and twists." },
+  { id:3, title:"The Imperfections of Memory", author:"Angelina Aludo", category:"Fiction", price:14.00, img:"https://m.media-amazon.com/images/I/612wsoRcAAL.jpg", desc:"A reflective story about identity, loss, and remembering." },
+  { id:4, title:"Essential Life Skills for Teens", author:"Sharon Scott", category:"Self-Development", price:9.00, img:"https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1355072496i/15027878.jpg", desc:"Practical skills for confidence, communication, and habits." },
+  { id:5, title:"Personal Development Skills", author:"MTD Training", category:"Self-Development", price:11.00, img:"https://m.media-amazon.com/images/I/71lJBs5MNlL._AC_UF1000,1000_QL80_.jpg", desc:"Focus, productivity, mindset, and self-improvement tools." },
+  { id:6, title:"The Art of College Admission", author:"Noah Craig", category:"Education", price:15.00, img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTC6jUTdVxA6dYJ5eL2kAncRtcXAKga8oOQcQ&s", desc:"A clear guide to building a strong college application." },
+  { id:7, title:"Electric Twentieth", author:"Chaz Allen", category:"Fiction", price:13.00, img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTM1Af2YFS2pXZwRg4q5hX3zJhTKgTbXAyb3w", desc:"A bold modern read with minimalist style and tension." },
+  { id:8, title:"The Midnight Library", author:"Matt Haig", category:"Fiction", price:16.00, img:"https://www.bookxcess.com/cdn/shop/files/81_CRqnQx3L_1500x.jpg?v=1690330374", desc:"A novel about choices, regrets, and second chances." },
+  { id:9, title:"Atomic Habits", author:"James Clear", category:"Self-Development", price:18.00, img:"https://static-01.daraz.com.bd/p/77b2871db7ed16b159025caadccf3ba0.jpg", desc:"Build good habits and break bad ones—step by step." },
+  { id:10, title:"Rich Dad Poor Dad", author:"Robert T. Kiyosaki", category:"Education", price:17.00, img:"https://m.media-amazon.com/images/I/A1zuhzAUqNL._AC_UF1000,1000_QL80_.jpg", desc:"Personal finance lessons on money and mindset." }
+];
+
+/* =========================
+   CART STATE
+   ========================= */
+const CART_KEY = "bookworms_cart_v1";
+
+function loadCart(){
+  try{ return JSON.parse(localStorage.getItem(CART_KEY) || "[]"); }
+  catch(e){ return []; }
+}
+function saveCart(cart){ localStorage.setItem(CART_KEY, JSON.stringify(cart)); }
+function money(n){ return "$" + n.toFixed(2); }
+function cartCount(cart){ return cart.reduce((sum, item) => sum + item.qty, 0); }
+
+function updateNavBadge(){
+  const cart = loadCart();
+  document.getElementById("cartCount").textContent = cartCount(cart);
+}
+
+function escapeHtml(str){
+  return String(str)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+/* =========================
+   STORE RENDER
+   ========================= */
+function renderStore(){
+  const q = (document.getElementById("searchInput").value || "").trim().toLowerCase();
+  const cat = document.getElementById("categoryFilter").value;
+  const grid = document.getElementById("storeGrid");
+  grid.innerHTML = "";
+
+  const filtered = books.filter(b => {
+    const matchesText = (b.title + " " + b.author).toLowerCase().includes(q);
+    const matchesCat = (cat === "all") ? true : (b.category === cat);
+    return matchesText && matchesCat;
+  });
+
+  if(filtered.length === 0){
+    grid.innerHTML = `<div class="empty">No books found. Try a different search or category.</div>`;
+    return;
+  }
+
+  filtered.forEach(b => {
+    const card = document.createElement("div");
+    card.className = "book";
+    card.innerHTML = `
+      <img src="${b.img}" alt="${escapeHtml(b.title)} cover"/>
+      <div class="bookBody">
+        <div class="bTag">${b.category}</div>
+        <h3 class="bTitle">${escapeHtml(b.title)}</h3>
+        <p class="bMeta">by ${escapeHtml(b.author)}</p>
+        <p class="bMeta">${escapeHtml(b.desc)}</p>
+        <div class="priceRow">
+          <div class="price">${money(b.price)}</div>
+          <span class="bMeta">In stock</span>
+        </div>
+        <button class="addBtn" type="button" onclick="addToCart(${b.id})">Add to Cart</button>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+/* =========================
+   CART OPERATIONS
+   ========================= */
+function addToCart(bookId){
+  const b = books.find(x => x.id === bookId);
+  if(!b) return;
+
+  const cart = loadCart();
+  const found = cart.find(i => i.id === bookId);
+
+  if(found) found.qty += 1;
+  else cart.push({ id:b.id, title:b.title, author:b.author, price:b.price, qty:1 });
+
+  saveCart(cart);
+  updateNavBadge();
+  renderCart();
+  alert(`Added to cart: ${b.title}`);
+}
+
+function changeQty(bookId, delta){
+  const cart = loadCart();
+  const item = cart.find(i => i.id === bookId);
+  if(!item) return;
+
+  item.qty += delta;
+  if(item.qty <= 0){
+    const idx = cart.findIndex(i => i.id === bookId);
+    cart.splice(idx, 1);
+  }
+
+  saveCart(cart);
+  updateNavBadge();
+  renderCart();
+}
+
+function removeItem(bookId){
+  const cart = loadCart();
+  const idx = cart.findIndex(i => i.id === bookId);
+  if(idx >= 0){
+    cart.splice(idx, 1);
+    saveCart(cart);
+    updateNavBadge();
+    renderCart();
+  }
+}
+
+function clearCart(){
+  saveCart([]);
+  updateNavBadge();
+  renderCart();
+}
+
+function cartTotals(cart){
+  const subtotal = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+  const total = subtotal;
+  return { subtotal, total };
+}
+
+/* =========================
+   CART RENDER
+   ========================= */
+function renderCart(){
+  const cart = loadCart();
+  const left = document.getElementById("cartLeft");
+
+  if(cart.length === 0){
+    left.innerHTML = `
+      <div class="empty">
+        Your cart is empty. Go to <a href="#store" style="color:var(--accent); font-weight:900; text-decoration:none;">Store</a> and add some books.
+      </div>
+    `;
+    document.getElementById("subTotal").textContent = money(0);
+    document.getElementById("grandTotal").textContent = money(0);
+    return;
+  }
+
+  left.innerHTML = `
+    <table class="table" aria-label="Cart items">
+      <thead>
+        <tr>
+          <th style="width:48%;">Book</th>
+          <th style="width:18%;">Price</th>
+          <th style="width:20%;">Quantity</th>
+          <th style="width:14%;">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${cart.map(i => `
+          <tr>
+            <td>
+              <div style="font-weight:900;">${escapeHtml(i.title)}</div>
+              <div style="color:var(--muted); font-size:13px;">${escapeHtml(i.author)}</div>
+            </td>
+            <td><b>${money(i.price)}</b></td>
+            <td>
+              <div class="qtyCtrl">
+                <button class="qtyBtn" type="button" onclick="changeQty(${i.id}, -1)" aria-label="Decrease quantity">−</button>
+                <b style="min-width:22px; display:inline-block; text-align:center;">${i.qty}</b>
+                <button class="qtyBtn" type="button" onclick="changeQty(${i.id}, 1)" aria-label="Increase quantity">+</button>
+              </div>
+            </td>
+            <td>
+              <button class="removeBtn" type="button" onclick="removeItem(${i.id})">Remove</button>
+            </td>
+          </tr>
+        `).join("")}
+      </tbody>
+    </table>
+  `;
+
+  const { subtotal, total } = cartTotals(cart);
+  document.getElementById("subTotal").textContent = money(subtotal);
+  document.getElementById("grandTotal").textContent = money(total);
+}
+
+/* =========================
+   CHECKOUT MODAL (UPDATED)
+   ========================= */
+function checkout(){
+  const cart = loadCart();
+  if(cart.length === 0){
+    alert("Your cart is empty. Please add books before checkout.");
+    return;
+  }
+
+  document.getElementById("checkoutModal").classList.add("show");
+  document.getElementById("checkoutModal").setAttribute("aria-hidden","false");
+
+  const { total } = cartTotals(cart);
+  const lines = cart.map(i => `
+    <div style="display:flex; justify-content:space-between; gap:10px;">
+      <span><b>${escapeHtml(i.title)}</b> (x${i.qty})</span>
+      <span>${money(i.price * i.qty)}</span>
+    </div>
+  `).join("");
+
+  document.getElementById("checkoutSummaryBox").innerHTML = `
+    <div style="font-weight:900; margin-bottom:6px;">Order Summary</div>
+    ${lines}
+    <div style="border-top:1px dashed #e5e7eb; margin-top:10px; padding-top:10px; display:flex; justify-content:space-between;">
+      <span style="font-weight:900;">Total</span>
+      <span style="font-weight:900;">${money(total)}</span>
+    </div>
+  `;
+}
+
+function closeCheckout(){
+  document.getElementById("checkoutModal").classList.remove("show");
+  document.getElementById("checkoutModal").setAttribute("aria-hidden","true");
+}
+
+document.getElementById("checkoutForm").addEventListener("submit", function(e){
+  e.preventDefault();
+  alert("Order placed successfully (Demo). Thank you!");
+  closeCheckout();
+  clearCart();
+  location.hash = "#home";
+});
+
+document.getElementById("checkoutModal").addEventListener("click", function(e){
+  if(e.target.id === "checkoutModal") closeCheckout();
+});
+
+document.addEventListener("keydown", function(e){
+  const modal = document.getElementById("checkoutModal");
+  if(e.key === "Escape" && modal.classList.contains("show")) closeCheckout();
+});
+
+/* =========================
+   INIT
+   ========================= */
+document.getElementById("searchInput").addEventListener("input", renderStore);
+document.getElementById("categoryFilter").addEventListener("change", renderStore);
+document.getElementById("clearBtn").addEventListener("click", () => {
+  document.getElementById("searchInput").value = "";
+  document.getElementById("categoryFilter").value = "all";
+  renderStore();
+});
+
+updateNavBadge();
+renderStore();
+renderCart();
+</script>
+</body>
+</html>
